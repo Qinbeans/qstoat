@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/Qinbeans/stoat/compare/v1.4.1...v1.4.2) (2026-02-26)
+
+
+### Bug Fixes
+
+* update application metadata and default build URL ([087df8a](https://github.com/Qinbeans/stoat/commit/087df8abfe5ea1ef03a2ce3a9e38b4e19e0ae651))
+
 ## [1.4.1](https://github.com/Qinbeans/stoat/compare/v1.4.0...v1.4.1) (2026-02-26)
 
 
