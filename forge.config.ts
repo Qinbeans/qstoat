@@ -13,10 +13,10 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 // import { globSync } from "node:fs";
 
 const STRINGS = {
-  author: "Revolt Platforms LTD",
-  name: "Stoat",
-  execName: "stoat-desktop",
-  description: "Open source user-first chat platform.",
+  author: "Revolt Platforms LTD & Qinbeans",
+  name: "QStoat",
+  execName: "qstoat-desktop",
+  description: "Open source user-first chat platform. A touch of Qinbeans was added...",
 };
 
 const ASSET_DIR = "assets/desktop";

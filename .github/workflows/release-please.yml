@@ -67,6 +67,7 @@ jobs:
         env:
           PLATFORM: ${{ matrix.os }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Publish macOS x64
         if: matrix.os == 'macos-latest'
@@ -74,6 +75,7 @@ jobs:
         env:
           PLATFORM: ${{ matrix.os }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Publish Linux arm64
         if: matrix.os == 'ubuntu-latest'
@@ -81,3 +83,4 @@ jobs:
         env:
           PLATFORM: ${{ matrix.os }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
