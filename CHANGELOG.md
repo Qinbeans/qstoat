@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/Qinbeans/stoat/compare/v1.4.0...v1.4.1) (2026-02-26)
+
+
+### Bug Fixes
+
+* update GitHub repository owner and name in configuration ([d88150b](https://github.com/Qinbeans/stoat/commit/d88150b092159a1c4d2a7cd452597eac82fb5276))
+
 ## [1.4.0](https://github.com/Qinbeans/stoat/compare/v1.3.0...v1.4.0) (2026-02-26)
 
 
