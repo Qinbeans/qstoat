@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/Qinbeans/stoat/compare/v1.5.2...v1.5.3) (2026-02-27)
+
+
+### Bug Fixes
+
+* run frontend build as explicit workflow step ([be32e59](https://github.com/Qinbeans/stoat/commit/be32e594d6dd4d0d36d77be8d2bddb69c7b44280))
+
 ## [1.5.2](https://github.com/Qinbeans/stoat/compare/v1.5.1...v1.5.2) (2026-02-27)
 
 
