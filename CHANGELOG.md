@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/Qinbeans/stoat/compare/v1.5.4...v1.6.0) (2026-02-27)
+
+
+### Features
+
+* add additional VITE environment variables for build and release workflows ([2e5a839](https://github.com/Qinbeans/stoat/commit/2e5a839e098898d657eb7b91b8d1157046f9c625))
+
 ## [1.5.4](https://github.com/Qinbeans/stoat/compare/v1.5.3...v1.5.4) (2026-02-27)
 
 
