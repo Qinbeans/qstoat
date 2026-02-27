@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/Qinbeans/stoat/compare/v1.5.3...v1.5.4) (2026-02-27)
+
+
+### Bug Fixes
+
+* increase Node.js heap size and remove beforeBuildCommand ([4223460](https://github.com/Qinbeans/stoat/commit/4223460b6756aebc9fcb456c0594e92592da5972))
+
 ## [1.5.3](https://github.com/Qinbeans/stoat/compare/v1.5.2...v1.5.3) (2026-02-27)
 
 
