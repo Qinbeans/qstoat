@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/Qinbeans/qstoat/compare/v1.6.2...v1.7.0) (2026-02-27)
+
+
+### Features
+
+* Implement video streaming features with RoomVideoManager and VideoGrid components ([418aafb](https://github.com/Qinbeans/qstoat/commit/418aafb827e01e85f487bfe74f78f312eb891644))
+
 ## [1.6.2](https://github.com/Qinbeans/stoat/compare/v1.6.1...v1.6.2) (2026-02-27)
 
 
