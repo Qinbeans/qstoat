@@ -1,4 +1,4 @@
-import { Match, Show, Switch } from "solid-js";
+import { Match, Show, Switch, createSignal, onCleanup, onMount } from "solid-js";
 import {
   TrackLoop,
   TrackReference,
@@ -12,7 +12,7 @@ import {
   useTracks,
 } from "solid-livekit-components";
 
-import { Track } from "livekit-client";
+import { ParticipantEvent, Track } from "livekit-client";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
@@ -124,6 +124,26 @@ function UserTile() {
   const participant = useEnsureParticipant();
   const track = useMaybeTrackRefContext();
 
+  // Reactively track whether the camera is currently enabled (not muted).
+  // useMaybeTrackRefContext() is non-reactive; setCameraEnabled(false) keeps
+  // the publication alive but marks it muted, so we watch TrackMuted/Unmuted.
+  const isCameraActive = () =>
+    !participant.getTrackPublication(Track.Source.Camera)?.isMuted;
+  const [hasCameraTrack, setHasCameraTrack] = createSignal(isCameraActive());
+  onMount(() => {
+    const update = () => setHasCameraTrack(isCameraActive());
+    participant.on(ParticipantEvent.TrackMuted, update);
+    participant.on(ParticipantEvent.TrackUnmuted, update);
+    participant.on(ParticipantEvent.LocalTrackPublished, update);
+    participant.on(ParticipantEvent.LocalTrackUnpublished, update);
+    onCleanup(() => {
+      participant.off(ParticipantEvent.TrackMuted, update);
+      participant.off(ParticipantEvent.TrackUnmuted, update);
+      participant.off(ParticipantEvent.LocalTrackPublished, update);
+      participant.off(ParticipantEvent.LocalTrackUnpublished, update);
+    });
+  });
+
   const isMuted = useIsMuted({
     participant,
     source: Track.Source.Microphone,
@@ -160,7 +180,7 @@ function UserTile() {
           </AvatarOnly>
         }
       >
-        <Match when={isTrackReference(track)}>
+        <Match when={isTrackReference(track) && hasCameraTrack()}>
           <VideoTrack
             style={{ "grid-area": "1/1" }}
             trackRef={track as TrackReference}

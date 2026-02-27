@@ -20,6 +20,7 @@ export function VoiceInputOptions() {
       <CategoryButton.Group>
         <SelectMicrophone />
         <SelectSpeaker />
+        <SelectCamera />
       </CategoryButton.Group>
       <VolumeSliders />
     </Column>
@@ -60,6 +61,51 @@ function SelectMicrophone() {
             action={<Checkbox checked={device.deviceId === activeId()} />}
             onClick={() => {
               state.voice.preferredAudioInputDevice = device.deviceId;
+              setActiveMediaDevice(device.deviceId);
+            }}
+          >
+            {device.label}
+          </CategoryButton>
+        )}
+      </For>
+    </CategoryCollapse>
+  );
+}
+
+/**
+ * Select camera
+ */
+function SelectCamera() {
+  const { t } = useLingui();
+  const state = useState();
+  const { activeDeviceId, devices, setActiveMediaDevice } =
+    useMediaDeviceSelect({
+      kind: "videoinput",
+    });
+
+  const activeId = () =>
+    (activeDeviceId() === "default"
+      ? state.voice.preferredVideoInputDevice
+      : undefined) ?? activeDeviceId();
+
+  const description = () =>
+    devices().find((device) => device.deviceId === activeId())?.label ??
+    t`Using default camera`;
+
+  return (
+    <CategoryCollapse
+      icon={<Symbol>videocam</Symbol>}
+      title={<Trans>Select camera</Trans>}
+      description={description()}
+      scrollable
+    >
+      <For each={devices()}>
+        {(device) => (
+          <CategoryButton
+            icon="blank"
+            action={<Checkbox checked={device.deviceId === activeId()} />}
+            onClick={() => {
+              state.voice.preferredVideoInputDevice = device.deviceId;
               setActiveMediaDevice(device.deviceId);
             }}
           >

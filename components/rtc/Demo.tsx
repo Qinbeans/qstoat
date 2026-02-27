@@ -31,6 +31,10 @@ import {
 import MdHeadsetOff from "@material-design-icons/svg/outlined/headset_off.svg?component-solid";
 import MdMicOn from "@material-design-icons/svg/outlined/mic.svg?component-solid";
 import MdMicOff from "@material-design-icons/svg/outlined/mic_off.svg?component-solid";
+import MdScreenShare from "@material-design-icons/svg/outlined/screen_share.svg?component-solid";
+import MdStopScreenShare from "@material-design-icons/svg/outlined/stop_screen_share.svg?component-solid";
+import MdVideocam from "@material-design-icons/svg/outlined/videocam.svg?component-solid";
+import MdVideocamOff from "@material-design-icons/svg/outlined/videocam_off.svg?component-solid";
 
 import { InRoom, useVoice } from ".";
 
@@ -350,35 +354,31 @@ export function Demo(props: { channel: Channel }) {
               <MdHeadset {...iconSize(20)} />
             </Button> */}
 
-            <div
-              use:floating={{
-                tooltip: {
-                  placement: "top",
-                  content: "Coming soon! 👀",
-                },
-              }}
-            >
-              <Button onPress={() => voice.toggleCamera()} isDisabled>
-                <Switch fallback="Camera">
-                  <Match when={voice.video()}>Sharing camera</Match>
+            <Show when={props.channel.havePermission("Video")}>
+              <IconButton
+                aria-label="Toggle camera"
+                variant={voice.video() ? "filled" : "tonal"}
+                onPress={() => voice.toggleCamera()}
+              >
+                <Switch fallback={<MdVideocamOff {...iconSize(20)} />}>
+                  <Match when={voice.video()}>
+                    <MdVideocam {...iconSize(20)} />
+                  </Match>
                 </Switch>
-              </Button>
-            </div>
+              </IconButton>
 
-            <div
-              use:floating={{
-                tooltip: {
-                  placement: "top",
-                  content: "Coming soon! 👀",
-                },
-              }}
-            >
-              <Button onPress={() => voice.toggleScreenshare()} isDisabled>
-                <Switch fallback="Share screen">
-                  <Match when={voice.screenshare()}>Sharing screen</Match>
+              <IconButton
+                aria-label="Share screen"
+                variant={voice.screenshare() ? "filled" : "tonal"}
+                onPress={() => voice.toggleScreenshare()}
+              >
+                <Switch fallback={<MdScreenShare {...iconSize(20)} />}>
+                  <Match when={voice.screenshare()}>
+                    <MdStopScreenShare {...iconSize(20)} />
+                  </Match>
                 </Switch>
-              </Button>
-            </div>
+              </IconButton>
+            </Show>
           </Show>
         </Actions>
       </Row>
