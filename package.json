@@ -9,7 +9,10 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "prep:generate-icons": "node scripts/generateIcons.mjs",
+    "prep:copyassets": "node scripts/copyAssets.mjs",
+    "prep": "pnpm run prep:generate-icons && pnpm run prep:copyassets"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^2.0.2",
