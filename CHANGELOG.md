@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/Qinbeans/stoat/compare/v1.6.1...v1.6.2) (2026-02-27)
+
+
+### Bug Fixes
+
+* update qstoat version to 1.6.1 and adjust item size in MemberSidebar ([6138712](https://github.com/Qinbeans/stoat/commit/6138712b211a2ef7a6bef82548aadf37f2d23f9f))
+
 ## [1.6.1](https://github.com/Qinbeans/stoat/compare/v1.6.0...v1.6.1) (2026-02-27)
 
 
