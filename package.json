@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "type": "module",
   "packageManager": "pnpm@10.15.0",
   "scripts": {
