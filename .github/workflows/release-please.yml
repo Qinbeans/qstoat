@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.rp.outputs.release_created }}
+      tag_name: ${{ steps.rp.outputs.tag_name }}
     steps:
       - id: rp
         uses: googleapis/release-please-action@v4
@@ -31,14 +32,25 @@ jobs:
     name: Publish App
     needs: release-please
     if: needs.release-please.outputs.release_created == 'true'
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.settings.os }}
 
     permissions:
       contents: write
 
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        settings:
+          - os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+          - os: ubuntu-22.04
+            target: aarch64-unknown-linux-gnu
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+          - os: macos-latest
+            target: x86_64-apple-darwin
+          - os: macos-latest
+            target: aarch64-apple-darwin
 
     steps:
       - name: Checkout
@@ -46,6 +58,39 @@ jobs:
 
       - name: Checkout assets
         run: git -c submodule."assets".update=checkout submodule update --init assets
+
+      - name: Install Linux system dependencies
+        if: matrix.settings.os == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: Install aarch64 cross-compilation tools
+        if: matrix.settings.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get install -y \
+            gcc-aarch64-linux-gnu \
+            libwebkit2gtk-4.1-dev:arm64
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.settings.target }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+          key: ${{ matrix.settings.target }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -61,26 +106,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Publish
-        run: |
-          pnpm run publish
+      - name: Build and publish Tauri app
+        uses: tauri-apps/tauri-action@v0
         env:
-          PLATFORM: ${{ matrix.os }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
-
-      - name: Publish macOS x64
-        if: matrix.os == 'macos-latest'
-        run: pnpm run publish --arch=x64
-        env:
-          PLATFORM: ${{ matrix.os }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-
-      - name: Publish Linux arm64
-        if: matrix.os == 'ubuntu-latest'
-        run: pnpm run publish --arch=arm64
-        env:
-          PLATFORM: ${{ matrix.os }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+        with:
+          tagName: ${{ needs.release-please.outputs.tag_name }}
+          releaseName: ${{ needs.release-please.outputs.tag_name }}
+          releaseBody: ""
+          releaseDraft: false
+          prerelease: false
+          args: --target ${{ matrix.settings.target }}

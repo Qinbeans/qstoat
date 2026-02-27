@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build App
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -16,13 +16,43 @@ jobs:
       - name: Checkout assets
         run: git -c submodule."assets".update=checkout submodule update --init assets
 
-      - name: Setup Mise
-        uses: immich-app/devtools/actions/use-mise@cd24790a7f5f6439ac32cc94f5523cb2de8bfa8c # use-mise-action-v1.1.0
+      - name: Install Linux system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          workspaces: src-tauri
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Build
-        run: pnpm run package
+        run: pnpm tauri build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
