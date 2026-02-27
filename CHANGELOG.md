@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/Qinbeans/stoat/compare/v1.6.0...v1.6.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* remove push trigger from build workflow ([59ee79d](https://github.com/Qinbeans/stoat/commit/59ee79d002ce88df298121e5073704173a8f6a15))
+
 ## [1.6.0](https://github.com/Qinbeans/stoat/compare/v1.5.4...v1.6.0) (2026-02-27)
 
 
