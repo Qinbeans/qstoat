@@ -53,7 +53,7 @@ jobs:
         run: pnpm install
 
       - name: Build workspace packages
-        run: pnpm --filter "@lingui-solid/*" build
+        run: pnpm --filter "@lingui-solid/*" --filter "stoat.js" --filter "solid-livekit-components" build
 
       - name: Build
         run: pnpm tauri build
