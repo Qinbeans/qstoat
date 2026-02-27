@@ -98,6 +98,11 @@ jobs:
       - name: Build workspace packages
         run: pnpm --filter "@lingui-solid/*" --filter "stoat.js" --filter "solid-livekit-components" build
 
+      - name: Build frontend
+        run: pnpm build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
       - name: Build and publish Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
