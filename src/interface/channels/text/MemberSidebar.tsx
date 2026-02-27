@@ -255,7 +255,7 @@ export function ServerMemberSidebar(props: Props) {
         <VirtualContainer
           items={elements()}
           scrollTarget={props.scrollTargetElement}
-          itemSize={{ height: 42 }}
+          itemSize={{ height: 42, width: 240 }}
         >
           {(item) => (
             <div
