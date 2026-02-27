@@ -102,6 +102,7 @@ jobs:
         run: pnpm build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          NODE_OPTIONS: --max-old-space-size=4096
 
       - name: Build and publish Tauri app
         uses: tauri-apps/tauri-action@v0
