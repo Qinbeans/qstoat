@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/Qinbeans/qstoat/compare/v1.7.0...v1.8.0) (2026-02-27)
+
+
+### Features
+
+* Add icon generation scripts and update Tauri configuration with new icon paths ([3131ced](https://github.com/Qinbeans/qstoat/commit/3131ced3e3470706d493c9c29a9a133a8ff7d039))
+
 ## [1.7.0](https://github.com/Qinbeans/qstoat/compare/v1.6.2...v1.7.0) (2026-02-27)
 
 
