@@ -99,7 +99,7 @@ jobs:
         run: pnpm --filter "@lingui-solid/*" --filter "stoat.js" --filter "solid-livekit-components" build
 
       - name: Build and publish Tauri app
-        uses: tauri-apps/tauri-action@v1
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
