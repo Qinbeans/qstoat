@@ -75,9 +75,17 @@ export function floating(element: HTMLElement, accessor: Accessor<Props>) {
       if (current?.userCard) {
         setShow(undefined);
       } else if (!current) {
+        // hide other floating elements before showing this one
+        floatingElements().forEach((e) => {
+          if (e.element !== element) e.hide();
+        });
         setShow({ userCard: config.userCard });
       } else {
         setShow(undefined);
+        // replace with this one; ensure others are hidden
+        floatingElements().forEach((e) => {
+          if (e.element !== element) e.hide();
+        });
         setShow({ userCard: config.userCard });
       }
     }
@@ -98,9 +106,17 @@ export function floating(element: HTMLElement, accessor: Accessor<Props>) {
       if (current?.contextMenu) {
         setShow(undefined);
       } else if (!current) {
+        // hide other context menus before showing this one
+        floatingElements().forEach((e) => {
+          if (e.element !== element) e.hide();
+        });
         setShow({ contextMenu: config.contextMenu });
       } else {
         setShow(undefined);
+        // replace with this one; ensure others are hidden
+        floatingElements().forEach((e) => {
+          if (e.element !== element) e.hide();
+        });
         setShow({ contextMenu: config.contextMenu });
       }
     }

@@ -40,6 +40,8 @@ export function createStoatStore() {
   const members = new SvelteMap<string, SvelteMap<string, ServerMember>>();
   // messages[channelId] = ordered Message array
   const messages = new SvelteMap<string, Message[]>();
+  // messageReactions[messageId] = Record<emojiId, userId[]>
+  const messageReactions = new SvelteMap<string, Record<string, string[]>>();
   const emojis = new SvelteMap<string, Emoji>();
   const unreads = new SvelteSet<string>();
 
@@ -52,6 +54,40 @@ export function createStoatStore() {
   function ensureMessages(channelId: string): Message[] {
     if (!messages.has(channelId)) messages.set(channelId, []);
     return messages.get(channelId)!;
+  }
+
+  // Create a plain JS snapshot of a message's reactions so Svelte can observe
+  // changes. `stoat.js` stores reactions in Solid reactive maps/sets which
+  // Svelte can't observe directly; produce Record<string, string[]>
+  function reactionsSnapshot(message: any): Record<string, string[]> {
+    const out: Record<string, string[]> = {};
+    const reactions = message?.reactions;
+    if (!reactions) return out;
+    try {
+      const entries = Array.from(
+        (reactions as any).entries?.() ?? Object.entries(reactions as any),
+      );
+      for (const [emojiId, userSet] of entries as [any, any][]) {
+        if (userSet == null) {
+          out[emojiId] = [];
+        } else if (typeof userSet.size === "number") {
+          out[emojiId] = Array.from(userSet as Set<string>);
+        } else if (Array.isArray(userSet)) {
+          out[emojiId] = userSet.slice();
+        } else {
+          out[emojiId] = [];
+        }
+      }
+    } catch (e) {
+      for (const k of Object.keys(reactions)) {
+        const s = reactions[k];
+        if (s == null) out[k] = [];
+        else if (Array.isArray(s)) out[k] = s.slice();
+        else if (typeof s.size === "number") out[k] = Array.from(s);
+        else out[k] = [];
+      }
+    }
+    return out;
   }
 
   // ── Connect ───────────────────────────────────────────────────────────────
@@ -83,19 +119,36 @@ export function createStoatStore() {
 
     // Messages
     newClient.on("messageCreate", (message: Message) => {
+      // mirror reactions into a plain structure keyed by message id
+      messageReactions.set(message.id, reactionsSnapshot(message));
       const list = ensureMessages(message.channelId);
-      messages.set(message.channelId, [...list, message]);
+      messages.set(message.channelId, [message, ...list]);
     });
     newClient.on("messageUpdate", (message: Message) => {
+      messageReactions.set(message.id, reactionsSnapshot(message));
       const list = ensureMessages(message.channelId);
-      messages.set(
-        message.channelId,
-        list.map((m) => (m.id === message.id ? message : m)),
-      );
+      console.log("[stoat] messageUpdate", message.id, message.content);
+      messages.set(message.channelId, list.map((m) => (m.id === message.id ? message : m)));
     });
     newClient.on("messageDelete", (old: WithChannelId) => {
       const list = ensureMessages(old.channelId);
       messages.set(old.channelId, list.filter((m) => m.id !== old.id));
+    });
+
+    const updateReactionsForMessage = (message: Message) => {
+      messageReactions.set(message.id, reactionsSnapshot(message));
+      const list = ensureMessages(message.channelId);
+      messages.set(message.channelId, list.map((m) => (m.id === message.id ? message : m)));
+    };
+
+    newClient.on("messageReactionAdd", (message: Message, userId: string, emoji: string) => {
+      updateReactionsForMessage(message);
+    });
+    newClient.on("messageReactionRemove", (message: Message, userId: string, emoji: string) => {
+      updateReactionsForMessage(message);
+    });
+    newClient.on("messageReactionRemoveEmoji", (message: Message, emoji: string) => {
+      updateReactionsForMessage(message);
     });
 
     // Users
@@ -115,6 +168,7 @@ export function createStoatStore() {
     // Emojis
     newClient.on("emojiCreate", (emoji: Emoji) => emojis.set(emoji.id, emoji));
     newClient.on("emojiDelete", (old: WithId) => emojis.delete(old.id));
+
   }
 
   // ── Disconnect ────────────────────────────────────────────────────────────
@@ -128,6 +182,7 @@ export function createStoatStore() {
     users.clear();
     members.clear();
     messages.clear();
+    messageReactions.clear();
     emojis.clear();
     unreads.clear();
     selfProfile = null;
@@ -144,6 +199,7 @@ export function createStoatStore() {
     users,
     members,
     messages,
+    messageReactions,
     emojis,
     unreads,
     connect,

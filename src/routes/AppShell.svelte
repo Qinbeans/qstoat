@@ -10,9 +10,10 @@
   const store = getContext<StoatStore>(STOAT_CTX);
 
   interface Props {
+    ctxId: { value: string | null };
     hash: string;
   }
-  let { hash }: Props = $props();
+  let { hash, ctxId = $bindable() }: Props = $props();
 
   // Parse hash into a typed route descriptor.
   // Supported patterns:
@@ -64,6 +65,6 @@
     />
 
     <!-- Main content -->
-    <MainContent {store} {route} />
+    <MainContent {store} {route} bind:ctxId />
   </div>
 {/if}

@@ -65,9 +65,9 @@
         avatarSrc={undefined}
         name={server.name}
         avatarSize={40}
-        bannerClass="rounded-xl"
-        avatarClass="translate-y-[-3vh] w-full text-center"
-        class="h-23 my-2"
+        bannerClass="rounded-xl w-full"
+        avatarClass="translate-y-[-2rem] w-full text-center"
+        class="h-23 my-2 w-full"
       />
     </div>
 

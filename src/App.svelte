@@ -12,6 +12,7 @@
   // Initialise the stoat.js Svelte adapter and expose it via context
   // so every child component can access it via getContext(STOAT_CTX).
   const store = createStoatStore();
+  let ctxId = $state<{ value: string | null }>({ value: null });
   setContext(STOAT_CTX, store);
 
   // Simple hash-based SPA routing — ideal for Tauri (no server-side routing needed).
@@ -137,6 +138,13 @@
   const isAuthenticated = $derived(store.client !== null);
 </script>
 
+<svelte:window
+  onclick={() => {
+    if (ctxId.value) {
+      ctxId.value = null;
+    }
+  }}
+/>
 <div class="h-screen w-screen overflow-hidden bg-q-bg text-q-text">
   {#if restoring}
     <!-- Spinner shown while a stored session is being verified -->
@@ -164,6 +172,6 @@
   {:else if !isAuthenticated}
     <Login />
   {:else}
-    <AppShell {hash} />
+    <AppShell {hash} bind:ctxId />
   {/if}
 </div>

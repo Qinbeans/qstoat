@@ -42,10 +42,10 @@
       onclick={() => navigate(server.id)}
       title={server.name}
       class={[
-        "relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full text-sm font-semibold transition-all",
+        "relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl text-sm font-semibold transition-all",
         isActive
-          ? "rounded-xl bg-blue-600 text-white"
-          : "bg-q-surface-2 text-q-text-2 hover:rounded-xl hover:bg-blue-500 hover:text-white",
+          ? "text-white"
+          : "text-q-text-2 hover:bg-blue-500 hover:text-white",
       ].join(" ")}
     >
       {#if server.animatedIconURL ?? server.iconURL}
@@ -61,7 +61,7 @@
       <!-- Active indicator pip -->
       {#if isActive}
         <span
-          class="absolute -left-1 top-1/2 h-5 w-1.5 -translate-y-1/2 rounded-r-full bg-white"
+          class="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-white"
         ></span>
       {/if}
     </button>
