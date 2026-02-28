@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "material-symbols";
+
+/* ── Semantic colour tokens ─────────────────────────────────────────────── */
+/* Expose CSS custom properties as Tailwind colour utilities so every        */
+/* component can use e.g. bg-q-bg, text-q-muted, border-q-border, etc.      */
+@theme inline {
+  --color-q-bg:        var(--q-bg);
+  --color-q-surface:   var(--q-surface);
+  --color-q-surface-2: var(--q-surface-2);
+  --color-q-surface-3: var(--q-surface-3);
+  --color-q-deep:      var(--q-deep);
+  --color-q-border:    var(--q-border);
+  --color-q-text:      var(--q-text);
+  --color-q-text-2:    var(--q-text-2);
+  --color-q-muted:     var(--q-muted);
+  --color-q-subtle:    var(--q-subtle);
+}
+
+/* ── Dark theme (default) ────────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --q-bg:        #111827; /* gray-900  */
+  --q-surface:   #1f2937; /* gray-800  */
+  --q-surface-2: #374151; /* gray-700  */
+  --q-surface-3: #4b5563; /* gray-600  */
+  --q-deep:      #030712; /* gray-950  */
+  --q-border:    #374151; /* gray-700  */
+  --q-text:      #f9fafb; /* gray-50   */
+  --q-text-2:    #e5e7eb; /* gray-200  */
+  --q-muted:     #9ca3af; /* gray-400  */
+  --q-subtle:    #6b7280; /* gray-500  */
+}
+
+/* ── Light theme ─────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --q-bg:        #f3f4f6; /* gray-100  */
+  --q-surface:   #ffffff; /* white     */
+  --q-surface-2: #e5e7eb; /* gray-200  */
+  --q-surface-3: #d1d5db; /* gray-300  */
+  --q-deep:      #d1d5db; /* gray-300  */
+  --q-border:    #d1d5db; /* gray-300  */
+  --q-text:      #111827; /* gray-900  */
+  --q-text-2:    #374151; /* gray-700  */
+  --q-muted:     #6b7280; /* gray-500  */
+  --q-subtle:    #9ca3af; /* gray-400  */
+}
+
+/* ── System theme ────────────────────────────────────────────────────────── */
+/* Defaults to dark; flips to light if OS prefers light mode.                */
+[data-theme="system"] {
+  --q-bg:        #111827;
+  --q-surface:   #1f2937;
+  --q-surface-2: #374151;
+  --q-surface-3: #4b5563;
+  --q-deep:      #030712;
+  --q-border:    #374151;
+  --q-text:      #f9fafb;
+  --q-text-2:    #e5e7eb;
+  --q-muted:     #9ca3af;
+  --q-subtle:    #6b7280;
+}
+
+@media (prefers-color-scheme: light) {
+  [data-theme="system"] {
+    --q-bg:        #f3f4f6;
+    --q-surface:   #ffffff;
+    --q-surface-2: #e5e7eb;
+    --q-surface-3: #d1d5db;
+    --q-deep:      #d1d5db;
+    --q-border:    #d1d5db;
+    --q-text:      #111827;
+    --q-text-2:    #374151;
+    --q-muted:     #6b7280;
+    --q-subtle:    #9ca3af;
+  }
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

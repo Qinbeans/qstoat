@@ -1,7 +1,5 @@
 packages:
-  - 'js-lingui-solid/packages/*'
   - 'stoat.js'
-  - 'solid-livekit-components'
 
 onlyBuiltDependencies:
   - esbuild

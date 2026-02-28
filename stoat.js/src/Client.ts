@@ -353,6 +353,7 @@ export class Client extends AsyncEventEmitter<Events> {
     const data = await this.api.post("/auth/session/login", details);
     if (data.result === "Success") {
       this.#session = data;
+      this.#updateHeaders();
       // TODO: return await this.connect();
     } else {
       throw "MFA not implemented!";
